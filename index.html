@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartManage-In-All-MW</title>
+<style>
+:root{--g:#0d7c66;--r:#d32f2f}
+*{box-sizing:border-box;font-family:system-ui}
+body{margin:0;background:#f5f7f6}
+.card{background:#fff;border-radius:16px;padding:16px;margin:12px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+button{border:none;border-radius:12px;padding:12px 18px;font-weight:700}
+.btn-g{background:var(--g);color:#fff}
+.btn-r{background:var(--r);color:#fff}
+.btn-o{border:2px solid var(--g);background:#fff;color:var(--g)}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin:6px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.big{font-size:22px;font-weight:800}
+.hidden{display:none}
+#lang{position:fixed;inset:0;background:#fff;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+</style>
+</head>
+<body>
+<div id="lang">
+<h1>🇲🇼 SmartManage-In-All-MW</h1>
+<b>Sankhani Chiyankhulo / Choose Language</b>
+<p>One Website for All Businesses</p>
+<div style="width:100%;max-width:320px;display:flex;flex-direction:column;gap:12px;margin-top:20px">
+<button class="btn-g" style="font-size:20px" onclick="setL('ny')">🇲🇼 CHICHEWA</button>
+<button class="btn-r" style="font-size:20px" onclick="setL('en')">🇬🇧 ENGLISH</button>
+</div>
+<p style="font-size:12px;margin-top:20px;text-align:center">Owner: Mkandawire Allan<br>+265890840266<br>4 Days FREE, MK 5,000/90 Days<br>Mpamba: Tivwale Ng'oma</p>
+</div>
+
+<div id="app" class="hidden">
+<div class="card"><div style="display:flex;justify-content:space-between"><h2 id="appTitle">SmartManage</h2><button class="btn-o" onclick="chL()">🌐 EN/NY</button></div><p id="sub" style="color:#666;font-size:13px"></p></div>
+
+<div id="login" class="card">
+<h3 id="t1">Login</h3><p id="d1" style="font-size:12px;color:#666"></p>
+<select id="cc"><option value="+265">+265 Malawi</option><option value="+260">+260 Zambia</option><option value="+27">+27 SA</option></select>
+<input id="ph" type="tel" placeholder="Phone 890840266">
+<input id="pin" type="password" maxlength="4" placeholder="4-digit PIN">
+<button class="btn-g" style="width:100%;margin-top:10px" onclick="login()" id="btnL">Login</button>
+<p style="font-size:11px;color:#666">Fake PIN 0000 shows empty / PIN yabodza 0000 opanda kanthu</p>
+<p style="text-align:center;font-weight:700;color:#0d7c66" id="free"></p>
+</div>
+
+<div id="dash" class="hidden">
+<div class="card"><div style="display:flex;justify-content:space-between"><span id="wel"></span><button onclick="logout()" class="btn-o">Logout</button></div>
+<div class="grid" style="margin-top:12px">
+<div style="background:#e8f5e9;padding:12px;border-radius:12px"><div id="lb1" style="font-size:12px"></div><div id="v1" class="big">MK 0</div></div>
+<div style="background:#ffebee;padding:12px;border-radius:12px"><div id="lb2"></div><div id="v2" class="big">MK 0</div></div>
+<div style="background:#e3f2fd;padding:12px;border-radius:12px"><div id="lb3"></div><div id="v3" class="big">MK 0</div></div>
+<div style="background:#fff3e0;padding:12px;border-radius:12px"><div id="lb4"></div><div id="v4" class="big">MK 0</div></div>
+</div><p id="low" style="color:red;font-weight:700"></p></div>
+
+<div class="card"><h3 id="tA"></h3><div class="grid">
+<button class="btn-g" onclick="addS()" id="bS"></button>
+<button class="btn-r" onclick="addE()" id="bE"></button>
+<button class="btn-o" onclick="deb()" id="bD"></button>
+<button class="btn-o" onclick="stk()" id="bSt"></button>
+<button class="btn-o" onclick="wor()" id="bW"></button>
+<button class="btn-g" onclick="closeD()" id="bC"></button>
+</div></div>
+
+<div class="card"><h3 id="tB"></h3>
+<button class="btn-g" style="width:100%" onclick="bak()" id="bBak"></button>
+<button class="btn-r" style="width:100%;margin-top:8px" onclick="sendO()" id="bSend"></button>
+<p style="font-size:11px;color:#666" id="dB"></p>
+</div>
+<div id="list" class="card"></div>
+</div>
+</div>
+
+<script>
+const T={
+en:{appTitle:"SmartManage-In-All-MW",sub:"One Website for All Businesses - Shop, Salon, Restaurant, School, Farming, Mpamba Agent",t1:"Login with Phone + PIN",d1:"Your data private per phone - No Kuberedwa",btnL:"Login / Lowani",lb1:"Today Income",lb2:"Expenses",lb3:"Profit",lb4:"Cash at Hand",tA:"Money Actions",bS:"Money In",bE:"Money Out",bD:"People Owe Me",bSt:"My Stock",bW:"My People - Pay",bC:"Daily Closing PDF",tB:"Backup Safe",bBak:"Backup for Me",bSend:"Send Backup to Owner +265890840266",dB:"Encrypted with Phone+PIN",free:"4 Days FREE, MK 5,000/90 Days - Mpamba +265890840266"},
+ny:{appTitle:"SmartManage-In-All-MW",sub:"Pulogalamu Imodzi ya Bizinesi Zonse - Shop, Salon, Restaurant, Sukulu, Ulimi, Mpamba",t1:"Lowani ndi Foni + PIN",d1:"Data yanu ndi yachinsinsi - Palibe kuberedwa",btnL:"Lowani",lb1:"Ndalama Lero",lb2:"Ndalama Zotuluka",lb3:"Phindu",lb4:"Ndalama Mmanja",tA:"Zochita za Ndalama",bS:"Ndalama Zolowa",bE:"Ndalama Zotuluka",bD:"Ngongole",bSt:"Katundu",bW:"Anthu Anga - Lipira",bC:"Kutseka Tsiku",tB:"Sungani Data",bBak:"Sungani Yanga",bSend:"Tumizani kwa Mwini +265890840266",dB:"Yosungidwa ndi Foni+PIN",free:"Masiku 4 AULERE, MK 5,000 pa masiku 90 - Mpamba +265890840266"}
+};
+let lang=localStorage.getItem('app_lang')||'',cur=null,db={sales:[],exp:[],stock:[],workers:[],debts:[]};
+function setL(l){localStorage.setItem('app_lang',l);lang=l;document.getElementById('lang').style.display='none';document.getElementById('app').classList.remove('hidden');ap();check();}
+function chL(){lang=lang==='en'?'ny':'en';localStorage.setItem('app_lang',lang);ap();}
+function ap(){let t=T[lang];for(let k in t){let e=document.getElementById(k);if(e)e.innerText=t[k];}document.getElementById('appTitle').innerText=t.appTitle;document.getElementById('sub').innerText=t.sub;}
+function check(){if(lang){document.getElementById('lang').style.display='none';document.getElementById('app').classList.remove('hidden');ap();}let s=localStorage.getItem('smart_sess');if(s){cur=s;document.getElementById('login').classList.add('hidden');document.getElementById('dash').classList.remove('hidden');load();}}
+function login(){let cc=document.getElementById('cc').value,ph=document.getElementById('ph').value.trim(),pin=document.getElementById('pin').value.trim();if(ph.length<6||pin.length!=4){alert('Enter phone + 4 PIN / Lowetsani foni + PIN 4');return;}let key=cc+ph;if(pin==='0000'){cur='FAKE_'+key;db={sales:[],exp:[],stock:[],workers:[],debts:[]};}else{cur=key+'_'+pin;let r=localStorage.getItem('smart_'+cur);db=r?JSON.parse(r):{sales:[],exp:[],stock:[],workers:[],debts:[]};}localStorage.setItem('smart_sess',cur);document.getElementById('login').classList.add('hidden');document.getElementById('dash').classList.remove('hidden');document.getElementById('wel').innerText=(lang==='ny'?'Moni ':'Hello ')+cc+ph;load();save();}
+function logout(){localStorage.removeItem('smart_sess');location.reload();}
+function save(){if(cur&&!cur.startsWith('FAKE_'))localStorage.setItem('smart_'+cur,JSON.stringify(db));}
+function load(){let inc=db.sales.reduce((a,b)=>a+b.amount,0),ex=db.exp.reduce((a,b)=>a+b.amount,0);document.getElementById('v1').innerText='MK '+inc;document.getElementById('v2').innerText='MK '+ex;document.getElementById('v3').innerText='MK '+(inc-ex);document.getElementById('v4').innerText='MK '+(inc-ex);let low=db.stock.filter(s=>s.qty<=5);document.getElementById('low').innerText=low.length?(lang==='ny'?'Low: ':'Low Stock: ')+low.map(s=>s.name).join(', '):'';}
+function addS(){let n=prompt('Product / Katundu?');if(!n)return;let a=parseInt(prompt('Amount / Mtengo?'));if(!a)return;db.sales.push({name:n,amount:a,time:Date.now()});save();load();}
+function addE(){let n=prompt('Expense / Chotuluka?');if(!n)return;let a=parseInt(prompt('Amount?'));if(!a)return;db.exp.push({name:n,amount:a,time:Date.now()});save();load();}
+function deb(){let n=prompt('Who owes? / Dzina?');if(!n)return;let a=parseInt(prompt('How much? / Zingati?'));if(!a)return;db.debts.push({name:n,amount:a});save();let m=`Moni ${n}, ngongole MK ${a} - SmartManage MW`;if(confirm('WhatsApp?'))window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');}
+function stk(){let n=prompt('Stock name?');if(!n)return;let q=parseInt(prompt('Qty?'));db.stock.push({name:n,qty:q});save();load();}
+function wor(){let n=prompt('Worker name?');if(!n)return;let a=parseInt(prompt('Pay MK?'));if(!a)return;let mm=prompt('Cash/Mpamba/Bank','Mpamba');db.workers.push({name:n,amount:a,method:mm});db.exp.push({name:'Pay '+n,amount:a});save();load();alert('Paid '+n+' MK '+a);}
+function closeD(){let inc=db.sales.reduce((a,b)=>a+b.amount,0),ex=db.exp.reduce((a,b)=>a+b.amount,0);let t=`SmartManage Daily Closing\nUser:${cur}\nIncome: MK ${inc}\nExpense: MK ${ex}\nProfit: MK ${inc-ex}\nOwner: +265890840266`;window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank');}
+function bak(){let d=btoa(JSON.stringify(db));localStorage.setItem('backup_'+cur,d);alert(lang==='ny'?'Yasungidwa!':'Saved!');}
+function sendO(){let d=btoa(JSON.stringify(db));let m=`ENCRYPTED BACKUP from ${cur}\nData:${d.substring(0,400)}`;window.open('https://wa.me/265890840266?text='+encodeURIComponent(m),'_blank');}
+check();if(lang)ap();
+</script>
+</body>
+</html>
